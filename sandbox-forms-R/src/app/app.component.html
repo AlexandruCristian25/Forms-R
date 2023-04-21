@@ -1,0 +1,51 @@
+<div style="margin-left: 20px;">
+  <form [formGroup]="myForm" (ngSubmit)="onUserSubmit()">
+    <div formGroupName="userData">
+      <div class="col-md-7">
+        <label for="username" class="form-label">Username:</label>
+        <input 
+          type="text" 
+          class="form-control form-control-lg" 
+          formControlName="username"
+          id="username">
+        <span *ngIf="!myForm.get('userData.username')?.valid && myForm.get('userData.username')?.touched">
+          <span *ngIf="myForm.get('userData.username')?.hasError('required')">Field is required!</span>
+          <span *ngIf="myForm.get('userData.username')?.hasError('usernameExistsInBannedList')">Username already taken!</span>
+        </span>
+      </div>
+      <div class="col-md-7">
+        <label for="email" class="form-label">Email:</label>
+        <input 
+          type="text" 
+          class="form-control form-control-lg" 
+          formControlName="email"
+          id="email">
+          <span *ngIf="!myForm.get('userData.email')?.valid && myForm.get('userData.email')?.touched">
+            Please enter a valid email!</span>  
+      </div>  
+    </div>
+    <div class="col-md-7 mt-4">
+      <div *ngFor="let gender of genders">
+        <label>
+          <input 
+            type="radio" 
+            name="gender"
+            formControlName="gender"
+            [value]="gender"> {{ gender }}
+        </label>
+      </div>
+    </div>
+    <div class="col-md-7" formArrayName="languages">
+      <div>Enter the spoken languages</div>
+      <button class="btn btn-secondary" type="button" (click)="onAddLanguage()">Add Language</button>
+      <div *ngFor="let language of getControls(); let i = index">
+        <input type="text" class="form-control form-control-lg" [formControlName]="i">
+      </div>
+    </div>
+    <div class="mt-4">
+      <span *ngIf="!myForm.valid && myForm.touched">
+        Please enter valid data!</span><br>  
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
